@@ -1,1 +1,39 @@
 @import "tailwindcss";
+
+:root{
+    --primary-color: #6A4E39;
+    --whatsapp-color:#128C7E;
+    --head-sec-color: #0F172A;
+    --secondary-bg:#6a4e3926;
+}
+
+body{
+    font-family: "Cairo", sans-serif;
+}
+
+.container{
+    margin-inline: auto;
+    padding-inline: 1rem;
+    overflow: hidden;
+}
+
+button{
+    cursor: pointer;
+}
+
+@media(max-width: 991px){
+    body{
+        font-size: 11px;
+    }
+}
+
+@theme {
+  --animate-wiggle: wiggle .3s ease-in-out;
+  @keyframes wiggle {
+    0%{
+        opacity: 0;
+    }100%{
+        opacity: 1;
+    }
+  }
+}
