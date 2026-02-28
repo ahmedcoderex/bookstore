@@ -18,7 +18,7 @@ function CardBook({ image, title, description, price, index, id }) {
     <motion.div
       initial={{ opacity: 0, translateY: 20 }}
       whileInView={{ opacity: 1, translateY: 0 }}
-      transition={{ delay: 0.3 * index, duration: 0.6 }}
+      transition={{ delay: 0.01 * index, duration: 0.6 }}
       key={index}
       className="group relative bg-(--secondary-bg) rounded-xl overflow-hidden"
     >

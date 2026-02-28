@@ -44,7 +44,11 @@ function Navbar() {
             </NavLink>
             <NavLink
               to="/dashboard"
-              className="py-3 px-4 rounded-md hover:bg-(--primary-color) hover:text-gray-200 transition-all duration-300"
+              className={({ isActive }) =>
+                `py-3 px-4 rounded-md transition-all duration-300 
+                  hover:bg-(--primary-color) hover:text-gray-200
+                  ${isActive ? "bg-(--primary-color) text-gray-200" : ""}`
+              }
             >
               لوحه التحكم
             </NavLink>

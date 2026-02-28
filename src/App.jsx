@@ -5,6 +5,7 @@ import Books from "./pages/Books";
 import NotFound from "./pages/NotFound";
 import DetailsBook from "./components/home/DetailsBook";
 import Dashboard from "./pages/Dashboard";
+import { ToastContainer } from "react-toastify";
 const App = () => {
   const routing = createBrowserRouter([
     {
@@ -22,7 +23,12 @@ const App = () => {
       ],
     },
   ]);
-  return <RouterProvider router={routing} />;
+  return (
+    <>
+    <RouterProvider router={routing} />
+    <ToastContainer position="bottom-right" />
+    </>
+  );
 };
 
 export default App;

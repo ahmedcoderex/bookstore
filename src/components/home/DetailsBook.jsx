@@ -27,20 +27,22 @@ function DetailsBook() {
   if (isLoading) return <Loading text="جاري تحميل تفاصيل الكتاب" />;
   return (
     <section className="py-18 bg-(--secondary-bg)">
-      <div className="container flex flex-col lg:flex-row min-h-80 gap-12 ">
+      <div className="container flex flex-col lg:flex-row min-h-80 gap-12">
         {/* Images Book */}
-        <div className=" h-full  p-8 bg-blue-300/20 rounded-2xl  w-fit mx-auto lg:mx-0">
+        <div className="p-8 bg-(--primary-color)/10 rounded-2xl lg:w-1/3  mx-auto lg:mx-0">
           <img
             src={currentBook.image}
             alt={currentBook.title}
-            className="rounded-2xl"
+            className="rounded-2xl h-full w-full object-cover"
           />
         </div>
         {/*=== Images Book ===*/}
 
+      
+
         {/* Details Book */}
 
-        <div>
+        <div className="lg:w-2/3 w-full">
           <span className="text-(--primary-color) bg-(--primary-color)/10 rounded-xl block w-fit py-1 px-2 text-xs">
             الاكثر مبيعا
           </span>
@@ -110,8 +112,8 @@ function DetailsBook() {
                 <h3 className="font-bold">{currentBook.publication_year}</h3>
               </div>
               <div className="p-4 bg-(--secondary-bg)">
-                <h6 className="text-sm">نوع التغليف</h6>
-                <h3 className="font-bold">{currentBook.cover_type}</h3>
+                <h6 className="text-sm">التصنيف</h6>
+                <h3 className="font-bold">{currentBook.name_category}</h3>
               </div>
             </div>
             {/*=== Details for book ===*/}
