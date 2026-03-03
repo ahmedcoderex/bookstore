@@ -109,7 +109,12 @@ function Dashboard() {
         setDataBook(initialDataBook);
         toast.success("Book added successfully ✅");
       } catch (error) {
-        toast.error(error.message);
+        if (
+          error.message ==
+          'new row violates row-level security policy for table "books"'
+        )
+          toast.error("انت غير مسموح بك باضافه كتاب");
+        else toast.error(error.message);
         console.error(error);
       }
     };

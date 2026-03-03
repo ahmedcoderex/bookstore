@@ -1,14 +1,17 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { CiSearch } from "react-icons/ci";
 import Button from "../ui/Button";
 import { FiMenu } from "react-icons/fi";
 import { motion } from "motion/react";
 import Logo from "../ui/Logo";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { IoCloseSharp } from "react-icons/io5";
+import { authUserContext } from "../../contexts/AuthUserContext";
 
 function Navbar() {
   const [isOpenNavLinks, setIsOpenNavLinks] = useState(false);
+  const { user, logout } = useContext(authUserContext);
+
   return (
     <nav
       className="h-18 flex items-center justify-between relative
@@ -42,16 +45,18 @@ function Navbar() {
             >
               الكتب
             </NavLink>
-            <NavLink
-              to="/dashboard"
-              className={({ isActive }) =>
-                `py-3 px-4 rounded-md transition-all duration-300 
+            {user.email && (
+              <NavLink
+                to="/dashboard"
+                className={({ isActive }) =>
+                  `py-3 px-4 rounded-md transition-all duration-300 
                   hover:bg-(--primary-color) hover:text-gray-200
                   ${isActive ? "bg-(--primary-color) text-gray-200" : ""}`
-              }
-            >
-              لوحه التحكم
-            </NavLink>
+                }
+              >
+                لوحه التحكم
+              </NavLink>
+            )}
           </div>
           {/*=== Nav Link ===*/}
         </div>
@@ -70,7 +75,24 @@ function Navbar() {
             />
           </div>
 
-          <Button text="تسجيل الدخول" />
+          <div>
+            {user.email && (
+              <button
+                onClick={logout}
+                className="py-1 px-4 bg-(--primary-color) text-gray-200 text-xl rounded-md cursor-pointer hover:scale-95 transition-all duration-300"
+              >
+                تسجيل الخروج
+              </button>
+            )}
+            {!user.email && (
+              <Link
+                to="/login"
+                className="py-1 px-4 bg-(--primary-color) text-gray-200 text-xl rounded-md cursor-pointer hover:scale-95 transition-all duration-300"
+              >
+                تسجيل الدخول
+              </Link>
+            )}
+          </div>
         </div>
         {/*=== Buttons & search icon ===*/}
 
@@ -129,24 +151,37 @@ function Navbar() {
                   >
                     الكتب
                   </NavLink>
-                  <NavLink
-                  to="/dashboard"
-                    className={({ isActive }) =>
-                      `w-full text-start py-3 px-4 rounded-md hover:text-(--primary-color) hover:bg-gray-200 transition-all duration-300
+                  {user.email && (
+                    <NavLink
+                      to="/dashboard"
+                      className={({ isActive }) =>
+                        `w-full text-start py-3 px-4 rounded-md hover:text-(--primary-color) hover:bg-gray-200 transition-all duration-300
                   ${isActive ? "text-(--primary-color) bg-gray-200" : ""}`
-                    }
-                    onClick={() => setIsOpenNavLinks(false)}
-                  >
-                    لوحه التحكم
-                  </NavLink>
+                      }
+                      onClick={() => setIsOpenNavLinks(false)}
+                    >
+                      لوحه التحكم
+                    </NavLink>
+                  )}
                 </div>
+
                 <div>
-                  <Button
-                    text="تسجيل الدخول"
-                    color="text-(--primary-color)"
-                    bg="bg-gray-200"
-                    width="w-full"
-                  />
+                  {user.email && (
+                    <button
+                      onClick={logout}
+                      className="py-1 px-4 bg-(--primary-color) text-center w-full text-gray-200 text-xl rounded-md cursor-pointer hover:scale-95 transition-all duration-300"
+                    >
+                      تسجيل الخروج
+                    </button>
+                  )}
+                  {!user.email && (
+                    <Link
+                      to="/login"
+                      className="py-1 px-4 bg-(--primary-color) text-center w-full text-gray-200 text-xl rounded-md block cursor-pointer hover:scale-95 transition-all duration-300"
+                    >
+                      تسجيل الدخول
+                    </Link>
+                  )}
                 </div>
               </div>
             </motion.div>
