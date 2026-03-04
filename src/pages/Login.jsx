@@ -15,8 +15,6 @@ function Login() {
     password: "",
   });
 
-  
-
   const handleFormData = (e) => {
     const { name, value } = e.target;
     setDataAuth({
@@ -79,7 +77,7 @@ function Login() {
                   type={showPass ? "text" : "password"}
                   name="password"
                   id="ps"
-                  placeholder="example@gmail.com"
+                  placeholder="******"
                   className="outline-none border-none py-4 px-2 flex-1"
                   value={dataAuth.password}
                   onChange={(e) => handleFormData(e)}

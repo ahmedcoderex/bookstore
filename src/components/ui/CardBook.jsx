@@ -4,13 +4,15 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "../../utils/supabaseClient";
 import { toast } from "react-toastify";
 import ConfirmModal from "./ConfirmModal";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { authUserContext } from "../../contexts/AuthUserContext";
 
 const handleDescriptionBook = (dis) => {
   return dis.split(" ").slice(0, 15).join(" ");
 };
 
 function CardBook({ image, title, description, price, index, id }) {
+  const {user} = useContext(authUserContext)
   const [openModal, setOpenModal] = useState(false);
   const navigate = useNavigate();
 
@@ -70,7 +72,11 @@ function CardBook({ image, title, description, price, index, id }) {
             </div>
           </div>
 
-          <button className="text-center text-lg lg:text-xl bg-red-500 text-gray-300 hover:font-bold transition-all duration-300 rounded-2xl w-full py-2 mt-2" onClick={() => setOpenModal(true)} >حذف الكتاب</button>
+          {
+            user.email && (
+              <button className="text-center text-lg lg:text-xl bg-red-500 text-gray-300 hover:font-bold transition-all duration-300 rounded-2xl w-full py-2 mt-2" onClick={() => setOpenModal(true)} >حذف الكتاب</button>
+            )
+          }
         </div>
       </motion.div>
 
