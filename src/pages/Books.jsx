@@ -13,21 +13,32 @@ function Books() {
   const [typeBooks, setTypeBooks] = useState("الكل");
   const [categories, setCategories] = useState();
 
-  const fetchData = async () => {
-    setIsLoading(true);
-    const { data, error } = await supabase.from("books").select("*");
-    data ? setAllBooks(data) : console.error(error);
-    setIsLoading(false);
-  };
-
   const fetchCategories = async () => {
     const { data, error } = await supabase.from("category").select();
     if (data) setCategories(data);
     if (error) toast.error(error.message);
   };
 
+  const fetchCurrentTypeBooks = async () => {
+    setIsLoading(true)
+    if (typeBooks === "الكل") {
+      const { data, error } = await supabase.from("books").select("*");
+      data ? setAllBooks(data) : toast.error(error.message);
+    } else {
+      const { data, error } = await supabase
+      .from("books")
+      .select("*")
+      .eq("name_category", typeBooks);
+      data ? setAllBooks(data) : toast.error(error.message);
+    }
+    setIsLoading(false)
+  };
+
   useEffect(() => {
-    fetchData();
+    fetchCurrentTypeBooks();
+  }, [typeBooks]);
+
+  useEffect(() => {
     fetchCategories();
   }, []);
 
@@ -43,10 +54,7 @@ function Books() {
             استكشف مجموعتنا المختارة بعناية من الروايات والكتب العلمية والأدبية
             التي تثري الفكر
           </p>
-          <div className="w-90 mt-8 mb-2">
-            <InputSearch />
-          </div>
-
+  
           <div className="flex flex-wrap gap-4 justify-between items-center">
             <div className="flex flex-wrap gap-2">
               {categories?.map((category, index) => (
@@ -73,13 +81,10 @@ function Books() {
         {/*=== Head section ===*/}
         {/* Content Books */}
         <div
-          className={`mt-8 mb-12 ${
-            allBooks?.filter((book) => book.name_category === typeBooks)
-              .length > 0 && "grid"
-          } ${typeBooks === "الكل" && "grid"} grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4`}
+          className={`mt-8 mb-12 ${allBooks.length > 0 ? "grid" : ""} grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4`}
         >
-          {typeBooks === "الكل" ? (
-            allBooks?.map((book, index) => {
+          {allBooks.length > 0 ? (
+            allBooks.map((book, index) => {
               return (
                 <CardBook
                   key={index}
@@ -92,25 +97,8 @@ function Books() {
                 />
               );
             })
-          ) : allBooks?.filter((book) => book.name_category === typeBooks)
-              .length > 0 ? (
-            allBooks
-              ?.filter((book) => book.name_category === typeBooks)
-              .map((book, index) => {
-                return (
-                  <CardBook
-                    key={index}
-                    title={book.title}
-                    image={book.image}
-                    index={index}
-                    description={book.description}
-                    price={book.price}
-                    id={book.id}
-                  />
-                );
-              })
           ) : (
-            <NotFoundAnyBook message={"لا يوجد اي كتاب حتي الان"} />
+            <NotFoundAnyBook message="لا يوجد اي كتب في هذا القسم بعد" />
           )}
         </div>
         {/*=== Content Books ===*/}

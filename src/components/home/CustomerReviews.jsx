@@ -1,8 +1,10 @@
-
 import { motion } from "motion/react";
 function CustomerReviews() {
   const review_clients = () => {
-    return Array.from({ length: 20 }, (_, index) => `/review_clients/v${index + 1}.webp`);
+    return Array.from(
+      { length: 20 },
+      (_, index) => `/review_clients/v${index + 1}.webp`,
+    );
   };
   return (
     <section className="py-12">
@@ -26,7 +28,7 @@ function CustomerReviews() {
             <motion.div
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
-              transition={{ delay: 0.1 * index }}
+              transition={{ duration: 0.6 }}
               viewport={{ once: true }}
               key={index}
               className="p-4 bg-(--secondary-bg) rounded-2xl"

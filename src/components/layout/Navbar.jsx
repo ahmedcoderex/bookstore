@@ -1,15 +1,15 @@
 import React, { useContext, useState } from "react";
-import { CiSearch } from "react-icons/ci";
-import Button from "../ui/Button";
 import { FiMenu } from "react-icons/fi";
 import { motion } from "motion/react";
 import Logo from "../ui/Logo";
 import { Link, NavLink } from "react-router-dom";
 import { IoCloseSharp } from "react-icons/io5";
 import { authUserContext } from "../../contexts/AuthUserContext";
+import ConfirmModal from "../ui/ConfirmModal";
 
 function Navbar() {
   const [isOpenNavLinks, setIsOpenNavLinks] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
   const { user, logout } = useContext(authUserContext);
 
   return (
@@ -63,23 +63,11 @@ function Navbar() {
 
         {/* Buttons & search icon */}
         <div className="hidden items-center gap-6 lg:flex">
-          <div
-            className="flex items-center gap-2
-          bg-gray-200 rounded-xl px-3 text-lg lg:text-xl"
-          >
-            <CiSearch />
-            <input
-              type="text"
-              className="
-            outline-none border-none p-2"
-            />
-          </div>
-
           <div>
             {user.email && (
               <button
-                onClick={logout}
-                className="py-1 px-4 bg-(--primary-color) text-gray-200 text-xl rounded-md cursor-pointer hover:scale-95 transition-all duration-300"
+                onClick={() => setOpenModal(true)}
+                className="py-1 px-4 border-red-500 border text-center w-full text-gray-800 hover:bg-red-500 hover:text-gray-200 text-xl rounded-md cursor-pointer hover:scale-95 transition-all duration-300"
               >
                 تسجيل الخروج
               </button>
@@ -115,22 +103,10 @@ function Navbar() {
               initial={{ height: 0 }}
               animate={{ height: "auto" }}
               transition={{ duration: 0.3 }}
-              className="overflow-hidden z-50 lg:hidden bg-(--primary-color) absolute top-full w-full left-0 py-4"
+              className="overflow-hidden z-50 lg:hidden bg-(--primary-color)/30 backdrop-blur-2xl absolute top-full w-full left-0 py-4"
             >
               <div className="container">
-                <div
-                  className="flex items-center gap-2
-          bg-blue-50 rounded-xl px-3 text-lg lg:text-xl"
-                >
-                  <CiSearch />
-                  <input
-                    type="text"
-                    className=" flex-1 
-            outline-none border-none p-2"
-                  />
-                </div>
-
-                <div className="flex flex-col text-gray-200 my-4">
+                <div className="flex flex-col gap-2 text-gray-200 my-4">
                   <NavLink
                     to=""
                     className={({ isActive }) =>
@@ -168,8 +144,8 @@ function Navbar() {
                 <div>
                   {user.email && (
                     <button
-                      onClick={logout}
-                      className="py-1 px-4 bg-(--primary-color) text-center w-full text-gray-200 text-xl rounded-md cursor-pointer hover:scale-95 transition-all duration-300"
+                      onClick={() => setOpenModal(true)}
+                      className="py-1 px-4 border-red-500 border text-center w-full text-gray-200 hover:bg-red-500 hover:text-gray-200 text-xl rounded-md cursor-pointer hover:scale-95 transition-all duration-300"
                     >
                       تسجيل الخروج
                     </button>
@@ -189,6 +165,15 @@ function Navbar() {
         </>
         {/*=== Show just in phone ===*/}
       </div>
+
+      {/* Confirm Modal */}
+      <ConfirmModal
+        isOpen={openModal}
+        onClose={() => setOpenModal(false)}
+        onConfirm={logout}
+        title="تسجيل الخروج"
+        message="هل أنت متأكد أنك تريد تسجيل الخروج؟"
+      />
     </nav>
   );
 }

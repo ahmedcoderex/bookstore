@@ -38,8 +38,6 @@ function DetailsBook() {
         </div>
         {/*=== Images Book ===*/}
 
-      
-
         {/* Details Book */}
 
         <div className="lg:w-2/3 w-full">
@@ -56,12 +54,9 @@ function DetailsBook() {
                 تاليف: {currentBook.author}
               </h4>
               <div className="flex items-center gap-1">
-                {currentBook.rating}
-                <FaStar className="text-yellow-500" />
-                <FaStar className="text-yellow-500" />
-                <IoIosStarHalf className="text-yellow-500" />
-                <CiStar />
-                <CiStar />
+                {Array.from({ length: currentBook.rating }).map((_, i) => (
+                  <FaStar className="text-yellow-500" key={i} />
+                ))}
               </div>
             </div>
             {/*=== Author and Rating ===*/}

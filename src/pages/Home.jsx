@@ -9,7 +9,7 @@ function Home() {
     <>
       <Hero />
       <WhyChooseUs/>
-      <NewBooks/>
+ 
       <CustomerReviews/>
     </>
   );

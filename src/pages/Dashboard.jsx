@@ -258,8 +258,8 @@ function Dashboard() {
               }}
               className="w-full py-4 rounded-2xl border border-gray-500/40 hover:border-(--primary-color) outline-none px-2 focus:border-(--primary-color) transition-all duration-300"
             >
-              <option value="">اختر تصنيف الكتاب</option>
-              {categories?.map((category) => (
+              <option value="" disabled>اختر تصنيف الكتاب</option>
+              {categories?.filter((category) => category.name != "الكل").map((category) => (
                 <option key={category.id} value={category.id}>
                   {category.name}
                 </option>
