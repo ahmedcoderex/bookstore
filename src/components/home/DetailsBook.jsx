@@ -29,7 +29,7 @@ function DetailsBook() {
     <section className="py-18 bg-(--secondary-bg)">
       <div className="container flex flex-col lg:flex-row min-h-80 gap-12">
         {/* Images Book */}
-        <div className="p-8 bg-(--primary-color)/10 rounded-2xl lg:w-1/3  mx-auto lg:mx-0">
+        <div className="p-8 bg-(--primary-color)/10 rounded-2xl lg:w-1/3  mx-auto lg:mx-0 h-100 xl:h-120">
           <img
             src={currentBook.image}
             alt={currentBook.title}
@@ -41,9 +41,7 @@ function DetailsBook() {
         {/* Details Book */}
 
         <div className="lg:w-2/3 w-full">
-          <span className="text-(--primary-color) bg-(--primary-color)/10 rounded-xl block w-fit py-1 px-2 text-xs">
-            الاكثر مبيعا
-          </span>
+          
           {/* Title */}
           <h3 className="text-3xl font-bold mb-4">{currentBook.title}</h3>
           {/*=== Title ===*/}
@@ -62,7 +60,7 @@ function DetailsBook() {
             {/*=== Author and Rating ===*/}
 
             {/* Description */}
-            <p className="text-gray-800 leading-6 text-sm w-[90%] lg:w-[65%]">
+            <p className="text-gray-800 text-sm md:text-lg lg:text-xl leading-8">
               {currentBook.description}
             </p>
             {/*=== Description ===*/}

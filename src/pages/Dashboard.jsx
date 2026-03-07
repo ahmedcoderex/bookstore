@@ -44,22 +44,19 @@ function Dashboard() {
   }, []);
 
   const uploadImage = async () => {
-    const imageFile = dataBook.image; // تأكد أن هذا هو ملف الـ File object وليس مجرد رابط
+    const imageFile = dataBook.image;
     if (!imageFile) return null;
 
-    // 1. تصحيح: المتغير كان 'file' وهو غير معرف، الصحيح 'imageFile'
     const fileExt = imageFile.name.split(".").pop();
 
-    // 2. استخدام UUID أو Timestamp نظيف لتجنب الرموز الغريبة
     const fileName = `${crypto.randomUUID()}.${fileExt}`;
     const filePath = `covers/${fileName}`;
 
-    // 3. عملية الرفع
     const { data, error } = await supabase.storage
       .from("books")
       .upload(filePath, imageFile, {
         cacheControl: "3600",
-        upsert: false, // اجعلها true إذا كنت تريد استبدال الملف بنفس الاسم
+        upsert: false,
       });
 
     if (error) {
@@ -67,7 +64,6 @@ function Dashboard() {
       return null;
     }
 
-    // 4. الحصول على الرابط المباشر
     const { data: publicUrlData } = supabase.storage
       .from("books")
       .getPublicUrl(filePath);
@@ -75,7 +71,7 @@ function Dashboard() {
     return publicUrlData.publicUrl;
   };
 
-  const handleAddNewBook = (e) => {
+  const handleAddNewBook = async (e) => {
     e.preventDefault();
 
     if (!dataBook.title.trim()) {
@@ -213,7 +209,7 @@ function Dashboard() {
               <input
                 className="py-4 w-full lg:w-fit px-2 rounded-2xl border flex-1 border-gray-400/50 outline-none hover:border-(--primary-color) transition-all duration-300 focus:border-(--primary-color)"
                 type="number"
-                placeholder="السعر قبل الخسم"
+                placeholder="السعر قبل الخصم"
                 name="discount"
                 value={dataBook.discount}
                 onChange={(e) => fillDataBook(e)}
@@ -266,7 +262,6 @@ function Dashboard() {
                     image: e.target.files[0],
                   })
                 }
-               
                 className="flex-1 border border-(--primary-color)/30 rounded-2xl px-2 py-2"
               />
 
@@ -287,6 +282,7 @@ function Dashboard() {
 
             <select
               name="id_category"
+              value={dataBook.id_category}
               onChange={(e) => {
                 const selectedId = e.target.value;
                 const selectedCategory = categories.find(

@@ -71,7 +71,7 @@ function Hero() {
             transition={{ duration: 0.6 }}
             className="text-4xl lg:text-6xl font-semibold"
           >
-            بيت الكتب
+           بيت الكتاب _ الفيوم
           </motion.h1>
 
           <p className="w-[90%] md:w-[85%] lg:w-[60%] mx-auto text-sm lg:text-lg mt-6 leading-8">

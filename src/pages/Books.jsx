@@ -20,18 +20,18 @@ function Books() {
   };
 
   const fetchCurrentTypeBooks = async () => {
-    setIsLoading(true)
+    setIsLoading(true);
     if (typeBooks === "الكل") {
       const { data, error } = await supabase.from("books").select("*");
       data ? setAllBooks(data) : toast.error(error.message);
     } else {
       const { data, error } = await supabase
-      .from("books")
-      .select("*")
-      .eq("name_category", typeBooks);
+        .from("books")
+        .select("*")
+        .eq("name_category", typeBooks);
       data ? setAllBooks(data) : toast.error(error.message);
     }
-    setIsLoading(false)
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -54,7 +54,7 @@ function Books() {
             استكشف مجموعتنا المختارة بعناية من الروايات والكتب العلمية والأدبية
             التي تثري الفكر
           </p>
-  
+
           <div className="flex flex-wrap gap-4 justify-between items-center">
             <div className="flex flex-wrap gap-2">
               {categories?.map((category, index) => (
