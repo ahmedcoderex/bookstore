@@ -1,48 +1,20 @@
-import InputSearch from "../components/ui/InputSearch";
 import Button from "../components/ui/Button";
 import CardBook from "../components/ui/CardBook";
-import { useEffect, useState } from "react";
-import { supabase } from "../utils/supabaseClient";
 import Loading from "../components/ui/Loading";
-import { toast } from "react-toastify";
 import NotFoundAnyBook from "../components/ui/NotFoundAnyBook";
-
+import useBooks from "../hooks/useBooks";
 function Books() {
-  const [allBooks, setAllBooks] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [typeBooks, setTypeBooks] = useState("الكل");
-  const [categories, setCategories] = useState();
-
-  const fetchCategories = async () => {
-    const { data, error } = await supabase.from("category").select();
-    if (data) setCategories(data);
-    if (error) toast.error(error.message);
-  };
-
-  const fetchCurrentTypeBooks = async () => {
-    setIsLoading(true);
-    if (typeBooks === "الكل") {
-      const { data, error } = await supabase.from("books").select("*");
-      data ? setAllBooks(data) : toast.error(error.message);
-    } else {
-      const { data, error } = await supabase
-        .from("books")
-        .select("*")
-        .eq("name_category", typeBooks);
-      data ? setAllBooks(data) : toast.error(error.message);
-    }
-    setIsLoading(false);
-  };
-
-  useEffect(() => {
-    fetchCurrentTypeBooks();
-  }, [typeBooks]);
-
-  useEffect(() => {
-    fetchCategories();
-  }, []);
-
-  if (isLoading) return <Loading text="جاري تحميل الكتب" />;
+  const {
+    allBooks,
+    isLoading,
+    categories,
+    loaderRef,
+    setTypeBooks,
+    setAllBooks,
+    setPage,
+    hasMore,
+    hasFetched,
+  } = useBooks();
 
   return (
     <section className="py-12">
@@ -55,27 +27,30 @@ function Books() {
             التي تثري الفكر
           </p>
 
-          <div className="flex flex-wrap gap-4 justify-between items-center">
-            <div className="flex flex-wrap gap-2">
-              {categories?.map((category, index) => (
-                <div
-                  key={index}
-                  onClick={() => {
-                    setTypeBooks(category.name);
-                  }}
-                >
-                  <Button text={category.name} />
-                </div>
-              ))}
+          <div className="flex flex-wrap gap-2 mt-4">
+            <div
+              onClick={() => {
+                setTypeBooks("الكل");
+                setAllBooks([]);
+                setPage(0);
+                hasFetched.current = false;
+              }}
+            >
+              <Button text="الكل" />
             </div>
-            <div className="flex items-center gap-1">
-              <button>نرنيب حسب:</button>
-
-              <select className="outline-none border-none p-2">
-                <option value="new">الاحدث اولا</option>
-                <option value="old">ااقدم اولا</option>
-              </select>
-            </div>
+            {categories?.map((category, index) => (
+              <div
+                key={index}
+                onClick={() => {
+                  setTypeBooks(category.name);
+                  setAllBooks([]);
+                  setPage(0);
+                  hasFetched.current = false;
+                }}
+              >
+                <Button text={category.name} />
+              </div>
+            ))}
           </div>
         </div>
         {/*=== Head section ===*/}
@@ -87,7 +62,7 @@ function Books() {
             allBooks.map((book, index) => {
               return (
                 <CardBook
-                  key={index}
+                  key={book.id}
                   title={book.title}
                   image={book.image}
                   index={index}
@@ -102,6 +77,16 @@ function Books() {
           )}
         </div>
         {/*=== Content Books ===*/}
+
+        {hasMore && (
+          <div ref={loaderRef} className="flex justify-center py-10">
+            {isLoading && <Loading text="تحميل المزيد..." />}
+          </div>
+        )}
+
+        {!hasMore && (
+          <p className="text-center text-gray-500">لا يوجد كتب أخرى</p>
+        )}
       </div>
     </section>
   );

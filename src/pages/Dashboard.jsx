@@ -155,6 +155,7 @@ function Dashboard() {
     };
     sendDataIntoDatabase();
   };
+  
   return (
     <section className="py-12 bg-(--secondary-bg) min-h-[calc(100vh-360px)]">
       <div className="container flex justify-center">

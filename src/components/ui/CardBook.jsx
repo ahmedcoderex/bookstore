@@ -8,7 +8,7 @@ import { useContext, useState } from "react";
 import { authUserContext } from "../../contexts/AuthUserContext";
 
 const handleDescriptionBook = (dis) => {
-  return dis.split(" ").slice(0, 15).join(" ");
+  return dis.split("").slice(0, 120).join("");
 };
 
 function CardBook({ image, title, description, price, index, id }) {
@@ -33,10 +33,9 @@ function CardBook({ image, title, description, price, index, id }) {
     }
 
     const imagePublicUrl = book.image;
-    const fileName = imagePublicUrl.split("/").pop();
 
-    const filePath = `covers/${fileName}`;
-
+    const filePath = imagePublicUrl.split("/books/")[1];
+    console.log("Deleting file:", filePath);
     const { error: storageError } = await supabase.storage
       .from("books")
       .remove([filePath]);

@@ -1,30 +1,16 @@
-import { useEffect, useState } from "react";
-import { CiStar } from "react-icons/ci";
 import { FaStar, FaWhatsapp } from "react-icons/fa";
 import { FaCartShopping } from "react-icons/fa6";
-import { IoIosStarHalf } from "react-icons/io";
 import { useParams } from "react-router-dom";
-import { supabase } from "../../utils/supabaseClient";
+
 import Loading from "../ui/Loading";
+import UseCurrentBook from "../../hooks/useCurrentBook";
 
 function DetailsBook() {
   const { id } = useParams();
-  const [currentBook, setCurrentBook] = useState({});
-  const [isLoading, setIsLoading] = useState(false);
-  useEffect(() => {
-    const fetchCurrentBook = async () => {
-      setIsLoading(true);
-      const { data, error } = await supabase
-        .from("books")
-        .select("*")
-        .eq("id", id)
-        .single();
-      data ? setCurrentBook(data) : console.error(error);
-      setIsLoading(false);
-    };
-    fetchCurrentBook();
-  }, []);
+  const { currentBook, isLoading } = UseCurrentBook(id);
+
   if (isLoading) return <Loading text="جاري تحميل تفاصيل الكتاب" />;
+
   return (
     <section className="py-18 bg-(--secondary-bg)">
       <div className="container flex flex-col lg:flex-row min-h-80 gap-12">
@@ -39,9 +25,7 @@ function DetailsBook() {
         {/*=== Images Book ===*/}
 
         {/* Details Book */}
-
         <div className="lg:w-2/3 w-full">
-          
           {/* Title */}
           <h3 className="text-3xl font-bold mb-4">{currentBook.title}</h3>
           {/*=== Title ===*/}
@@ -81,7 +65,11 @@ function DetailsBook() {
                   <FaCartShopping />
                   <span>اضافه الي السله</span>
                 </button>
-                <a href="https://chat.whatsapp.com/KVWWS9z5wYIEHG2ZYTlin5?mode=hqctcla" target="_blanck" className=" w-full lg:w-fit justify-center py-4 px-8 text-sm rounded-2xl lg:text-2xl flex items-center gap-1 text-(--whatsapp-color) font-semibold bg-(--whatsapp-color)/20">
+                <a
+                  href="https://chat.whatsapp.com/KVWWS9z5wYIEHG2ZYTlin5?mode=hqctcla"
+                  target="_blanck"
+                  className=" w-full lg:w-fit justify-center py-4 px-8 text-sm rounded-2xl lg:text-2xl flex items-center gap-1 text-(--whatsapp-color) font-semibold bg-(--whatsapp-color)/20"
+                >
                   <FaWhatsapp />
                   <span>طلب عبر الواتس اب</span>
                 </a>
