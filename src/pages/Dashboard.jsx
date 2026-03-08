@@ -14,7 +14,7 @@ const initialDataBook = {
   publication_year: "",
   author: "",
   rating: "",
-  id_category: null,
+  id_category: "",
   name_category: "",
   is_available: true,
 };
@@ -23,6 +23,7 @@ function Dashboard() {
   const titleRef = useRef();
   const [categories, setCategories] = useState();
   const [dataBook, setDataBook] = useState(initialDataBook);
+  const [formKey, setFormKey] = useState(0);
   useEffect(() => titleRef.current.focus(), []);
 
   const fillDataBook = (e) => {
@@ -110,6 +111,10 @@ function Dashboard() {
       toast.error("يرجي ادخال عدد صفحات الكتاب");
       return;
     }
+    if(!dataBook.name_category.trim()){
+      toast.error("يرجي ادخال التصميف");
+      return;
+    }
 
     const sendDataIntoDatabase = async () => {
       const imageUrl = await uploadImage();
@@ -141,8 +146,11 @@ function Dashboard() {
           .select();
 
         if (error) throw error;
-        setDataBook(initialDataBook);
-        if (data) toast.success("تم اضافه الكتاب بنجاح✅");
+        if (data) {
+          toast.success("تم اضافه الكتاب بنجاح✅");
+          setDataBook(initialDataBook);
+          setFormKey((prev) => prev + 1);
+        }
       } catch (error) {
         if (
           error.message ==
@@ -155,7 +163,7 @@ function Dashboard() {
     };
     sendDataIntoDatabase();
   };
-  
+
   return (
     <section className="py-12 bg-(--secondary-bg) min-h-[calc(100vh-360px)]">
       <div className="container flex justify-center">
@@ -255,6 +263,7 @@ function Dashboard() {
             </div>
             <div className="flex flex-col  lg:flex-row gap-2">
               <input
+                key={formKey}
                 type="file"
                 name="image"
                 onChange={(e) =>
@@ -283,9 +292,11 @@ function Dashboard() {
 
             <select
               name="id_category"
-              value={dataBook.id_category}
+              value={dataBook.id_category || ""}
               onChange={(e) => {
                 const selectedId = e.target.value;
+
+
                 const selectedCategory = categories.find(
                   (cat) => cat.id.toString() === selectedId,
                 );
